@@ -4,6 +4,12 @@ const ws_1 = require("ws");
 const wss = new ws_1.WebSocketServer({ port: 8081 });
 let userCount = 0;
 wss.on("connection", (socket) => {
-    console.log("user connected" + userCount);
     userCount = userCount + 1;
+    console.log("user connected#" + userCount);
+    socket.on("message", (message) => {
+        console.log("message recieved " + message.toString());
+        setTimeout(() => {
+            socket.send(message.toString() + ":sent from the server");
+        }, 1000);
+    });
 });
