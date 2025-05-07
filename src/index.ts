@@ -13,9 +13,11 @@ wss.on("connection", (socket) => {
 
 	socket.on("message", (message) => {
 		console.log("message recieved " + message.toString());
-		for (let i = 0; i < allSockets.length; i++) {
-			const s = allSockets[i];
+		allSockets.forEach((s) => {
 			s.send(message.toString() + ":sent from the server");
-		}
+		});
+	});
+	socket.on("disconnect", () => {
+		allSockets = allSockets.filter((x) => x != socket);
 	});
 });
